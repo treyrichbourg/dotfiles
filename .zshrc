@@ -3,8 +3,8 @@
 #autoload -Uz promptinit
 #promptinit
 #prompt adam1
-#prompt="%F{#A89984}%n@%m%F{#EBDBB2}:%B%F{#458588}%~%#%b " 
-prompt="%F{#A89984}%n@%m%F{#EBDBB2}:%B%F{#458588}%~%b%F{#EBDBB2}%# " 
+#prompt="%F{#A89984}%n@%m%F{#EBDBB2}:%B%F{#458588}%~%#%b "
+prompt="%F{#A89984}%n@%m%F{#EBDBB2}:%B%F{#458588}%~%b%F{#EBDBB2}%# "
 
 
 setopt histignorealldups sharehistory

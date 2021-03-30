@@ -1,4 +1,3 @@
-"Install vim-plug 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -8,10 +7,7 @@ endif
 "set the runtime path to include fzf
 "set rtp+=~/.fzf
 
-"set the leader key
-let mapleader = ' '
-
-syntax on
+syntax enable
 set noerrorbells
 set tabstop=4 softtabstop=4
 set shiftwidth=4
@@ -28,12 +24,15 @@ set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set scrolloff=8
-set clipboard=unnamed
+"set mouse=a
+set clipboard=unnamedplus
 
 call plug#begin('~/.vim/plugged')
-Plug 'morhetz/gruvbox'
+"Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 Plug 'jremmen/vim-ripgrep'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
 Plug 'vim-utils/vim-man'
 "Plug 'nvim-lua/completion-nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -42,6 +41,7 @@ Plug 'junegunn/fzf' ", {'do': { -> fzf#install() }}
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'calviken/vim-gdscript3'
+Plug 'psf/black', { 'branch': 'stable' }
 
 call plug#end()
 
@@ -49,18 +49,18 @@ call plug#end()
 set bg=dark
 colorscheme gruvbox
 
-"have nerdtree autorun
-"autocmd vimenter * NERDTree
-" Ctrl+n to toggle NERDTree
-noremap <C-n> :NERDTreeToggle<CR>
-noremap <leader>h :wincmd h<CR>
-noremap <leader>l :wincmd l<CR>
-noremap <leader>j :wincmd j<CR>
-noremap <leader>k :wincmd k<CR>
-noremap <leader>f :FZF<CR>
-noremap <leader>fb :Buffers<CR>
-noremap <leader>fc :Commands<CR>
-noremap <leader>fC :Colors<cr>
+"set the leader key
+let mapleader = ' '
+"Keybindings
+nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <leader>h :wincmd h<CR>
+nnoremap <leader>l :wincmd l<CR>
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>fz :FZF<CR>
+nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>fc :Commands<CR>
+nnoremap <leader>fC :Colors<cr>
 nnoremap <leader>ff :Files<cr>
 nnoremap <leader>fh :Helptags<cr>
 nnoremap <leader>fH :History<cr>
@@ -70,8 +70,26 @@ nnoremap <leader>fn :FZF ~/Notes<cr>
 nnoremap <leader>fr :Rg<cr>
 nnoremap <leader>fs :Snippets<cr>
 
+
+"autocmds
 "closes nerdtree if left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "let g:fzf_layout = { 'window': '1-split enew' }
+"Trims trailing whitespace
+fun! TrimWhiteSpace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+augroup comet
+    autocmd!
+"    autocmd BufWritePre *.py execute ':Black'
+    autocmd BufWritePre * :call TrimWhiteSpace()
+augroup END
+
+"source files
+source $HOME/dotfiles/nvim/coc/coc.vim
+
 
