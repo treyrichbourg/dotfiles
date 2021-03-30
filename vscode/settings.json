@@ -1,0 +1,13 @@
+{
+    "workbench.sideBar.location": "right",
+    "window.titleBarStyle": "custom",
+    "editor.fontFamily": "'Fira Code'",
+    "editor.fontLigatures": true,
+    "editor.minimap.enabled": false,
+    "breadcrumbs.enabled": true,
+    "explorer.confirmDelete": false,
+    "window.zoomLevel": 0,
+    "workbench.colorTheme": "Gruvbox Dark Hard",
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true
+}
