@@ -18,8 +18,8 @@ SAVEHIST=1000
 HISTFILE=~/.zsh_history
 
 # Alias
-alias ls='ls --color=auto'
-alias ll="ls -al"
+alias ls='ls --color=auto -lh'
+alias ll="ls -alh"
 alias la='ls -A'
 alias l='ls -CF'
 alias apti='sudo apt install'
@@ -28,6 +28,7 @@ alias aptl='apt list --installed'
 alias apts='apt search'
 alias vim='nvim'
 alias vi='nvim'
+alias ledg='ledger -f ~/Documents/Adulting/Ledger/ledger.txt'
 
 # Use modern completion system
 autoload -Uz compinit

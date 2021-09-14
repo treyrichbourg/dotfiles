@@ -4,11 +4,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"set the runtime path to include fzf
-"set rtp+=~/.fzf
-
 syntax enable
 set noerrorbells
+set nowrap
 set tabstop=4 softtabstop=4
 set shiftwidth=4
 set expandtab
@@ -24,15 +22,23 @@ set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set scrolloff=8
+set noshowmode
 "set mouse=a
 set clipboard=unnamedplus
 
 call plug#begin('~/.vim/plugged')
+Plug 'pprovost/vim-ps1'
 "Plug 'morhetz/gruvbox'
+Plug 'itchyny/lightline.vim'
+"Plug 'glepnir/galaxyline.nvim', {'branch': 'main'}
+Plug 'ledger/vim-ledger'
+Plug 'ryanoasis/vim-devicons'
 Plug 'gruvbox-community/gruvbox'
+Plug 'folke/tokyonight.nvim'
 Plug 'jremmen/vim-ripgrep'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
 Plug 'vim-utils/vim-man'
 "Plug 'nvim-lua/completion-nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -42,11 +48,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'calviken/vim-gdscript3'
 Plug 'psf/black', { 'branch': 'stable' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSU pdate'}
 
 call plug#end()
 
 "Set background/colorscheme
 set bg=dark
+" let g:tokyonight_style = "night"
+" let g:tokyonight_italic_functions = "true"
+" let g:tokyonight_sidebars = ["qf", "vista_kind", "terminal", "packer"]
 colorscheme gruvbox
 
 "set the leader key
@@ -92,4 +102,15 @@ augroup END
 "source files
 source $HOME/dotfiles/nvim/coc/coc.vim
 
+" lightline
+let g:lightline = {
+    \ 'colorscheme': 'gruvbox',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste'],
+    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+    \ },
+    \ 'component_function': {
+    \   'gitbranch': 'FugitiveHead'
+    \ }
+    \ }
 
