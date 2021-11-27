@@ -1,3 +1,4 @@
+let g:node_client_debug = 1
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -79,6 +80,7 @@ nnoremap <leader>fm :Maps<cr>
 nnoremap <leader>fn :FZF ~/Notes<cr>
 nnoremap <leader>fr :Rg<cr>
 nnoremap <leader>fs :Snippets<cr>
+tnoremap <C-[> <C-\><C-N>
 
 
 "autocmds
