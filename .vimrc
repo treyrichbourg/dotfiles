@@ -1,9 +1,9 @@
 "let g:node_client_debug = 1
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+" if empty(glob('~/.vim/autoload/plug.vim'))
+"   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+"     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+" endif
 
 syntax enable
 set noerrorbells
@@ -32,6 +32,7 @@ Plug 'pprovost/vim-ps1'
 "Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 "Plug 'glepnir/galaxyline.nvim', {'branch': 'main'}
+Plug 'folk/tokyonight.nvim', {'branch': 'main'}
 Plug 'ledger/vim-ledger'
 Plug 'ryanoasis/vim-devicons'
 Plug 'gruvbox-community/gruvbox'
@@ -49,16 +50,16 @@ Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'calviken/vim-gdscript3'
 Plug 'psf/black', { 'branch': 'stable' }
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSU pdate'}
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSU pdate'}
 
 call plug#end()
 
 "Set background/colorscheme
 set bg=dark
-" let g:tokyonight_style = "night"
-" let g:tokyonight_italic_functions = "true"
-" let g:tokyonight_sidebars = ["qf", "vista_kind", "terminal", "packer"]
-colorscheme gruvbox
+let g:tokyonight_style = "night"
+let g:tokyonight_italic_functions = "true"
+let g:tokyonight_sidebars = ["qf", "vista_kind", "terminal", "packer"]
+colorscheme tokyonight
 
 "set the leader key
 let mapleader = ' '
@@ -106,7 +107,7 @@ source $HOME/dotfiles/nvim/coc/coc.vim
 
 " lightline
 let g:lightline = {
-    \ 'colorscheme': 'gruvbox',
+    \ 'colorscheme': 'tokyonight',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste'],
     \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
