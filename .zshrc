@@ -30,6 +30,7 @@ alias vim='nvim'
 alias vi='nvim'
 alias ledg='ledger -f ~/Documents/Adulting/Ledger/ledger.txt'
 alias tty-clock='tty-clock -tc'
+alias sudo='nocorrect sudo -E '
 
 # Use modern completion system
 autoload -Uz compinit
