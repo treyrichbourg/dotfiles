@@ -25,6 +25,14 @@ end)
 
 lsp.setup()
 
+local cmp = require('cmp')
+
+cmp.setup({
+    mapping = {
+        ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    }
+})
+
 local null_ls = require('null-ls')
 
 null_ls.setup({
