@@ -32,6 +32,9 @@ alias ledg='ledger -f ~/Documents/Adulting/Ledger/ledger.txt'
 alias tty-clock='tty-clock -tc'
 alias sudo='nocorrect sudo -E '
 
+#exports
+export PATH="$PATH:$HOME/Projects/Python3"
+
 # Use modern completion system
 autoload -Uz compinit
 compinit

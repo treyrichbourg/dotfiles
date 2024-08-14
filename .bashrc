@@ -118,9 +118,9 @@ fi
 #source /usr/share/doc/fzf/examples/key-bindings.bash
 #source /usr/share/doc/fzf/examples/completion.bash
 
-export PATH="/home/comet/bin:$PATH"
-export PATH="/home/comet/Projects/Python3:$PATH"
-alias outlands="cd /media/comet/bank/Outlands2/Outlands/ClassicUO_beta_0-1-3-600 && MONO_IOMAP=all mono ClassicUO.exe"
+#export PATH="/home/comet/bin:$PATH"
+#export PATH="/home/comet/Projects/Python3:$PATH"
+#alias outlands="cd /media/comet/bank/Outlands2/Outlands/ClassicUO_beta_0-1-3-600 && MONO_IOMAP=all mono ClassicUO.exe"
 
 # pip bash completion start
 _pip_completion()
