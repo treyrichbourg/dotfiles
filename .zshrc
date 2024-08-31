@@ -32,6 +32,9 @@ alias ledg='ledger -f ~/Documents/Adulting/Ledger/ledger.txt'
 alias tty-clock='tty-clock -tc'
 alias sudo='nocorrect sudo -E '
 
+# If using kitten export TERM for ssh
+[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
+
 #exports
 export PATH="$PATH:$HOME/Projects/Python3"
 
