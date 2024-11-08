@@ -33,10 +33,10 @@ alias tty-clock='tty-clock -tc'
 alias sudo='nocorrect sudo -E '
 
 # If using kitten export TERM for ssh
-[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
+#[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
 #exports
-export PATH="$PATH:$HOME/Projects/Python3"
+export PATH="$PATH:$HOME/Projects/Python3:/opt/nvim-linux64/bin"
 
 # Use modern completion system
 autoload -Uz compinit
@@ -73,3 +73,7 @@ chpwd() {
       ;;
   esac
 }
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

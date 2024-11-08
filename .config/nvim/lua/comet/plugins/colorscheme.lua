@@ -8,7 +8,7 @@ return {
 			frappe = "colorscheme catppuccin-frappe"
 			macchiato = "colorscheme catppuccin-macchiato"
 			latte = "colorscheme catppuccin-latte"
-			vim.cmd(frappe) --Active
+			vim.cmd(macchiato) --Active
 		end,
 	},
 	{
@@ -18,7 +18,7 @@ return {
 			wave = "colorscheme kanagawa-wave"
 			dragon = "colorscheme kanagawa-dragon"
 			lotus = "colorscheme kanagawa-lotus"
-			--vim.cmd(wave) --Active
+			--			vim.cmd(wave) --Active
 		end,
 	},
 	{

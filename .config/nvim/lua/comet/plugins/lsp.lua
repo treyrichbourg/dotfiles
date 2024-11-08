@@ -18,7 +18,7 @@ return {
 			ensure_installed = {
 				"pyright",
 				"lua_ls",
-				"tsserver",
+				"ts_ls",
 				"bashls",
 			},
 			handlers = {
