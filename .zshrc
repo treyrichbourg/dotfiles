@@ -36,7 +36,8 @@ alias sudo='nocorrect sudo -E '
 #[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
 #exports
-export PATH="$PATH:$HOME/Projects/Python3:/opt/nvim-linux64/bin"
+export PATH="$PATH:$HOME/Projects/Python3:/opt/nvim-linux64/bin:$GOPATH/bin:$HOME/.local/share/nvim/mason/bin:/usr/local/go/bin"
+export GOPATH=$HOME/go
 
 # Use modern completion system
 autoload -Uz compinit
