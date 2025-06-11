@@ -17,6 +17,8 @@ return {
 		-- Capabilities
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+		---@diagnostic disable-next-line: inject-field
+		capabilities.offsetEncoding = { "utf-8" }
 
 		-- LSP keymaps
 		local function on_attach(_, bufnr)
@@ -47,6 +49,7 @@ return {
 
 		--Language servers
 		require("mason-lspconfig").setup({
+			automatic_installation = false,
 			ensure_installed = {
 				"pyright",
 				"lua_ls",
@@ -83,6 +86,7 @@ return {
 						on_attach = on_attach,
 						settings = {
 							gopls = {
+								buildFlags = { "-tags=e2e,unit" },
 								analyses = {
 									unusedparams = true,
 									nilness = true,
@@ -171,5 +175,7 @@ return {
 				"pylint",
 			},
 		})
+		vim.g.go_test_flags = "-tags=e2e"
+		vim.g.go_cmd_flags = { "-tags=e2e" }
 	end,
 }
