@@ -1,5 +1,8 @@
 return {
 	"neovim/nvim-lspconfig",
+	opts = {
+		mason = false,
+	},
 	dependencies = {
 		{ "williamboman/mason.nvim", config = true },
 		"williamboman/mason-lspconfig.nvim",
@@ -49,7 +52,6 @@ return {
 
 		--Language servers
 		require("mason-lspconfig").setup({
-			automatic_installation = false,
 			ensure_installed = {
 				"pyright",
 				"lua_ls",
@@ -57,92 +59,92 @@ return {
 				"bashls",
 				"gopls",
 			},
-			handlers = {
-				--Default handler
-				function(server_name)
-					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
-						on_attach = on_attach,
-					})
-				end,
-				-- Lua specific
-				["lua_ls"] = function()
-					require("lspconfig")["lua_ls"].setup({
-						capabilities = capabilities,
-						on_attach = on_attach,
-						settings = {
-							Lua = {
-								diagnostics = {
-									globals = { "vim" },
-								},
+		})
+		require("mason-lspconfig").setup_handlers({
+			--Default handler
+			function(server_name)
+				require("lspconfig")[server_name].setup({
+					capabilities = capabilities,
+					on_attach = on_attach,
+				})
+			end,
+			-- Lua specific
+			["lua_ls"] = function()
+				require("lspconfig")["lua_ls"].setup({
+					capabilities = capabilities,
+					on_attach = on_attach,
+					settings = {
+						Lua = {
+							diagnostics = {
+								globals = { "vim" },
 							},
 						},
-					})
-				end,
-				-- Go specific
-				["gopls"] = function()
-					require("lspconfig").gopls.setup({
-						capabilities = capabilities,
-						on_attach = on_attach,
-						settings = {
-							gopls = {
-								buildFlags = { "-tags=e2e,unit" },
-								analyses = {
-									unusedparams = true,
-									nilness = true,
-									unusedwrite = true,
-									shadow = true,
-								},
-								staticcheck = true,
-								gofumpt = true,
-								completeUnimported = true,
-								usePlaceholders = false,
-								hints = {
-									assignVariableTypes = true,
-									compositeLiteralFields = true,
-									compositeLiteralTypes = true,
-									constantValues = true,
-									parameterNames = true,
-									rangeVariableTypes = true,
-								},
+					},
+				})
+			end,
+			-- Go specific
+			["gopls"] = function()
+				require("lspconfig").gopls.setup({
+					capabilities = capabilities,
+					on_attach = on_attach,
+					settings = {
+						gopls = {
+							buildFlags = { "-tags=e2e,unit" },
+							analyses = {
+								unusedparams = true,
+								nilness = true,
+								unusedwrite = true,
+								shadow = true,
+							},
+							staticcheck = true,
+							gofumpt = true,
+							completeUnimported = true,
+							usePlaceholders = false,
+							hints = {
+								assignVariableTypes = true,
+								compositeLiteralFields = true,
+								compositeLiteralTypes = true,
+								constantValues = true,
+								parameterNames = true,
+								rangeVariableTypes = true,
 							},
 						},
-					})
-				end,
-				-- Python specific
-				["pyright"] = function()
-					require("lspconfig").pyright.setup({
-						capabilities = capabilities,
-						on_attach = on_attach,
-						settings = {
-							python = {
-								analyses = {
-									typeCheckingMode = "basic",
-									autoSearchPaths = true,
-									useLibraryCodeForTypes = true,
-								},
+					},
+				})
+			end,
+			-- Python specific
+			["pyright"] = function()
+				require("lspconfig").pyright.setup({
+					capabilities = capabilities,
+					on_attach = on_attach,
+					settings = {
+						python = {
+							analyses = {
+								typeCheckingMode = "basic",
+								autoSearchPaths = true,
+								useLibraryCodeForTypes = true,
 							},
 						},
-					})
-				end,
-				-- Typescript specific
-				["ts_ls"] = function()
-					require("lspconfig").ts_ls.setup({
-						capabilities = capabilities,
-						on_attach = on_attach,
-						settings = {
-							javascript = {
-								format = { enable = true },
-								lint = { enable = true, lintOnSave = true },
-							},
-							typescript = {
-								format = { enable = true },
-								lint = { enable = true, lintOnSave = true },
-							},
+					},
+				})
+			end,
+			-- Typescript specific
+			["ts_ls"] = function()
+				require("lspconfig").ts_ls.setup({
+					capabilities = capabilities,
+					on_attach = on_attach,
+					settings = {
+						javascript = {
+							format = { enable = true },
+							lint = { enable = true, lintOnSave = true },
 						},
-					})
-				end,
-			},
+						typescript = {
+							format = { enable = true },
+							lint = { enable = true, lintOnSave = true },
+						},
+					},
+				})
+			end,
 		})
 
 		--Autocomplete
