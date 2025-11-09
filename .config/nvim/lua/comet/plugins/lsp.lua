@@ -15,7 +15,12 @@ return {
 		"folke/neodev.nvim",
 	},
 	config = function()
-		require("mason").setup()
+		require("mason").setup({
+			registries = {
+				"github:mason-org/mason-registry",
+				"github:Crashdummyy/mason-registry",
+			},
+		})
 
 		-- Capabilities
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -58,7 +63,9 @@ return {
 				"ts_ls",
 				"bashls",
 				"gopls",
+				"html",
 			},
+			automatic_installation = true,
 		})
 		require("mason-lspconfig").setup_handlers({
 			--Default handler
@@ -119,7 +126,7 @@ return {
 					on_attach = on_attach,
 					settings = {
 						python = {
-							analyses = {
+							analysis = {
 								typeCheckingMode = "basic",
 								autoSearchPaths = true,
 								useLibraryCodeForTypes = true,
@@ -141,6 +148,22 @@ return {
 						typescript = {
 							format = { enable = true },
 							lint = { enable = true, lintOnSave = true },
+						},
+					},
+				})
+			end,
+			-- C# specific
+			["roslyn"] = function()
+				require("lspconfig").roslyn.setup({
+					capabilities = capabilities,
+					on_attach = on_attach,
+					settings = {
+						["csharp|inlay_hints"] = {
+							csharp_enable_inlay_hints_for_implicit_object_creation = true,
+							csharp_enable_inlay_hints_for_implicit_variable_types = true,
+						},
+						["csharp|code_lens"] = {
+							dotnet_enable_references_code_lens = true,
 						},
 					},
 				})
