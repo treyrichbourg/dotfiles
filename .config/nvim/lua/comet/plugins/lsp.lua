@@ -22,11 +22,25 @@ return {
 			},
 		})
 
+		vim.diagnostic.config({
+			virtual_text = true,
+			signs = true,
+			underline = true,
+			update_in_insert = false,
+		})
+
 		-- Capabilities
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 		---@diagnostic disable-next-line: inject-field
 		capabilities.offsetEncoding = { "utf-8" }
+		local roslynCapabilities = vim.tbl_deep_extend("force", capabilities, {
+			textDocument = {
+				diagnostic = {
+					dynamicRegistration = true,
+				},
+			},
+		})
 
 		-- LSP keymaps
 		local function on_attach(_, bufnr)
@@ -36,7 +50,16 @@ return {
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 			vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 			vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-			vim.keymap.set("n", "<leader>df", "<cmd>lua vim.diagnostic.open_float()<CR>")
+			-- vim.keymap.set("n", "<leader>df", "<cmd>lua vim.diagnostic.open_float()<CR>")
+			vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "Show diagnostics" })
+			-- vim.keymap.set("n", "<leader>df", function()
+			-- 	vim.diagnostic.open_float({
+			-- 		focusable = false,
+			-- 		scope = "line",
+			-- 		severity_sort = true,
+			-- 		bufnr = 0,
+			-- 	})
+			-- end, { desc = "Show diagnostics for current line" })
 			vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
 			vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
 			vim.keymap.set("n", "<space>wl", function()
@@ -53,6 +76,9 @@ return {
 					vim.notify("Formatting not supported by attached LSP.")
 				end
 			end, opts)
+			-- if vim.lsp.inlay_hint then
+			-- 	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+			-- end
 		end
 
 		--Language servers
@@ -84,6 +110,15 @@ return {
 						Lua = {
 							diagnostics = {
 								globals = { "vim" },
+							},
+							workspace = {
+								library = {
+									vim.fn.stdpath("config"),
+									vim.fn.stdpath("data") .. "/lazy",
+									vim.fn.stdpath("state") .. "/lazy",
+									vim.env.VIMRUNTIME,
+									vim.fn.getcwd(),
+								},
 							},
 						},
 					},
@@ -155,15 +190,21 @@ return {
 			-- C# specific
 			["roslyn"] = function()
 				require("lspconfig").roslyn.setup({
-					capabilities = capabilities,
+					cmd = {
+						"/home/comet/.local/share/nvim/mason/bin/roslyn",
+						"--logLevel=Debug",
+						"--extensionLogDirectory=/home/comet/.local/state/nvim",
+						"--stdio",
+					},
+					capabilities = roslynCapabilities,
 					on_attach = on_attach,
 					settings = {
-						["csharp|inlay_hints"] = {
-							csharp_enable_inlay_hints_for_implicit_object_creation = true,
-							csharp_enable_inlay_hints_for_implicit_variable_types = true,
+						["dotnet_analyzer_diagnostic"] = {
+							severity = "suggestion",
 						},
-						["csharp|code_lens"] = {
-							dotnet_enable_references_code_lens = true,
+						["csharp|background_analysis"] = {
+							dotnet_analyzer_diagnostics_scope = "fullSolution",
+							dotnet_compiler_diagnostics_scope = "fullSolution",
 						},
 					},
 				})
