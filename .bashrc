@@ -137,3 +137,4 @@ complete -o default -F _pip_completion pip
 
 #extend regex glob
 shopt -s extglob
+. "$HOME/.cargo/env"

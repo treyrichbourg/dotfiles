@@ -34,13 +34,13 @@ return {
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 		---@diagnostic disable-next-line: inject-field
 		capabilities.offsetEncoding = { "utf-8" }
-		local roslynCapabilities = vim.tbl_deep_extend("force", capabilities, {
-			textDocument = {
-				diagnostic = {
-					dynamicRegistration = true,
-				},
-			},
-		})
+		--local roslynCapabilities = vim.tbl_deep_extend("force", capabilities, {
+		--	textDocument = {
+		--		diagnostic = {
+		--			dynamicRegistration = true,
+		--		},
+		--	},
+		--})
 
 		-- LSP keymaps
 		local function on_attach(_, bufnr)
@@ -188,27 +188,27 @@ return {
 				})
 			end,
 			-- C# specific
-			["roslyn"] = function()
-				require("lspconfig").roslyn.setup({
-					cmd = {
-						"/home/comet/.local/share/nvim/mason/bin/roslyn",
-						"--logLevel=Debug",
-						"--extensionLogDirectory=/home/comet/.local/state/nvim",
-						"--stdio",
-					},
-					capabilities = roslynCapabilities,
-					on_attach = on_attach,
-					settings = {
-						["dotnet_analyzer_diagnostic"] = {
-							severity = "suggestion",
-						},
-						["csharp|background_analysis"] = {
-							dotnet_analyzer_diagnostics_scope = "fullSolution",
-							dotnet_compiler_diagnostics_scope = "fullSolution",
-						},
-					},
-				})
-			end,
+			--["roslyn"] = function()
+			--	require("lspconfig").roslyn.setup({
+			--		cmd = {
+			--			"/home/comet/.local/share/nvim/mason/bin/roslyn",
+			--			"--logLevel=Debug",
+			--			"--extensionLogDirectory=/home/comet/.local/state/nvim",
+			--			"--stdio",
+			--		},
+			--		capabilities = roslynCapabilities,
+			--		on_attach = on_attach,
+			--		settings = {
+			--			["dotnet_analyzer_diagnostic"] = {
+			--				severity = "suggestion",
+			--			},
+			--			["csharp|background_analysis"] = {
+			--				dotnet_analyzer_diagnostics_scope = "fullSolution",
+			--				dotnet_compiler_diagnostics_scope = "fullSolution",
+			--			},
+			--		},
+			--	})
+			--end,
 		})
 
 		--Autocomplete
