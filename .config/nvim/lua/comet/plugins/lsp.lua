@@ -13,6 +13,8 @@ return {
 		"hrsh7th/nvim-cmp",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"folke/neodev.nvim",
+		"L3MON4D3/LuaSnip",
+		"saadparwaiz1/cmp_luasnip",
 	},
 	config = function()
 		require("mason").setup({
@@ -215,6 +217,11 @@ return {
 		local cmp = require("cmp")
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }
 		cmp.setup({
+			snippet = {
+				expand = function(args)
+					require("luasnip").lsp_expand(args.body)
+				end,
+			},
 			mapping = cmp.mapping.preset.insert({
 				["<Tab>"] = cmp.mapping.select_next_item(cmp_select),
 				["<S-Tab>"] = cmp.mapping.select_prev_item(cmp_select),
@@ -226,6 +233,7 @@ return {
 			}),
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
+				{ name = "luasnip" },
 			}, {
 				{ name = "buffer" },
 			}),
