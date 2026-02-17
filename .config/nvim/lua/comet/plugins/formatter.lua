@@ -19,7 +19,7 @@ return {
 				python = { "isort", "black" },
 			},
 			format_on_save = {
-				lsp_fallback = true,
+				lsp_fallback = "fallback",
 				async = false,
 				timeout_ms = 1000,
 			},

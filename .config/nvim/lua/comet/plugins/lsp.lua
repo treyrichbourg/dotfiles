@@ -12,7 +12,6 @@ return {
 		"hrsh7th/cmp-cmdline",
 		"hrsh7th/nvim-cmp",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		"folke/neodev.nvim",
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 	},
@@ -36,32 +35,21 @@ return {
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 		---@diagnostic disable-next-line: inject-field
 		capabilities.offsetEncoding = { "utf-8" }
-		--local roslynCapabilities = vim.tbl_deep_extend("force", capabilities, {
-		--	textDocument = {
-		--		diagnostic = {
-		--			dynamicRegistration = true,
-		--		},
-		--	},
-		--})
 
 		-- LSP keymaps
-		local function on_attach(_, bufnr)
+		local function on_attach(client, bufnr)
+			if vim.b[bufnr].lsp_attached then
+				return
+			end
+			vim.b[bufnr].lsp_attached = true
+
 			local opts = { buffer = bufnr }
 			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 			vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 			vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-			-- vim.keymap.set("n", "<leader>df", "<cmd>lua vim.diagnostic.open_float()<CR>")
-			vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "Show diagnostics" })
-			-- vim.keymap.set("n", "<leader>df", function()
-			-- 	vim.diagnostic.open_float({
-			-- 		focusable = false,
-			-- 		scope = "line",
-			-- 		severity_sort = true,
-			-- 		bufnr = 0,
-			-- 	})
-			-- end, { desc = "Show diagnostics for current line" })
+			vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { buffer = bufnr, desc = "Show diagnostics" })
 			vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
 			vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
 			vim.keymap.set("n", "<space>wl", function()
@@ -72,15 +60,17 @@ return {
 			vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
 			vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 			vim.keymap.set("n", "<space>f", function()
-				if vim.lsp.buf.server_capabilities().documentFormattingProvider then
+				if client.server_capabilities.documentFormattingProvider then
 					vim.lsp.buf.format({ async = true })
 				else
 					vim.notify("Formatting not supported by attached LSP.")
 				end
+				--if vim.lsp.buf.server_capabilities().documentFormattingProvider then
+				--	vim.lsp.buf.format({ async = true })
+				--else
+				--	vim.notify("Formatting not supported by attached LSP.")
+				--end
 			end, opts)
-			-- if vim.lsp.inlay_hint then
-			-- 	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-			-- end
 		end
 
 		--Language servers
@@ -189,28 +179,6 @@ return {
 					},
 				})
 			end,
-			-- C# specific
-			--["roslyn"] = function()
-			--	require("lspconfig").roslyn.setup({
-			--		cmd = {
-			--			"/home/comet/.local/share/nvim/mason/bin/roslyn",
-			--			"--logLevel=Debug",
-			--			"--extensionLogDirectory=/home/comet/.local/state/nvim",
-			--			"--stdio",
-			--		},
-			--		capabilities = roslynCapabilities,
-			--		on_attach = on_attach,
-			--		settings = {
-			--			["dotnet_analyzer_diagnostic"] = {
-			--				severity = "suggestion",
-			--			},
-			--			["csharp|background_analysis"] = {
-			--				dotnet_analyzer_diagnostics_scope = "fullSolution",
-			--				dotnet_compiler_diagnostics_scope = "fullSolution",
-			--			},
-			--		},
-			--	})
-			--end,
 		})
 
 		--Autocomplete

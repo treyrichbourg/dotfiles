@@ -23,7 +23,7 @@ return {
 	---@module "roslyn.config"
 	---@type RoslynNvimConfig
 	opts = {
-		filewatching = "auto",
+		filewatching = false,
 		lock_target = true,
 
 		inlay_hints = {
@@ -46,8 +46,8 @@ return {
 					severity = "suggestion",
 				},
 				["csharp|background_analysis"] = {
-					dotnet_analyzer_diagnostics_scope = "fullSolution",
-					dotnet_compiler_diagnostics_scope = "fullSolution",
+					dotnet_analyzer_diagnostics_scope = "openFiles",
+					dotnet_compiler_diagnostics_scope = "openFiles",
 				},
 				["csharp|inlay_hints"] = {
 					csharp_enable_inlay_hints_for_implicit_object_creation = true,
