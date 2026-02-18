@@ -84,121 +84,115 @@ return {
 				"html",
 				"rust_analyzer",
 			},
-			automatic_installation = true,
+			automatic_enable = true,
 		})
-		require("mason-lspconfig").setup_handlers({
-			--Default handler
-			function(server_name)
-				require("lspconfig")[server_name].setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-				})
-			end,
-			-- Lua specific
-			["lua_ls"] = function()
-				require("lspconfig")["lua_ls"].setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-					settings = {
-						Lua = {
-							diagnostics = {
-								globals = { "vim" },
-							},
-							workspace = {
-								library = {
-									vim.fn.stdpath("config"),
-									vim.fn.stdpath("data") .. "/lazy",
-									vim.fn.stdpath("state") .. "/lazy",
-									vim.env.VIMRUNTIME,
-									vim.fn.getcwd(),
-								},
-							},
+
+		local lspconfig = require("lspconfig")
+
+		-- LSPs just using defaults
+		local servers = { "bashls", "html" }
+		for _, server in ipairs(servers) do
+			lspconfig[server].setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+			})
+		end
+
+		-- Lua specific
+		lspconfig.lua_ls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" },
+					},
+					workspace = {
+						library = {
+							vim.fn.stdpath("config"),
+							vim.fn.stdpath("data") .. "/lazy",
+							vim.fn.stdpath("state") .. "/lazy",
+							vim.env.VIMRUNTIME,
+							vim.fn.getcwd(),
 						},
 					},
-				})
-			end,
-			-- Go specific
-			["gopls"] = function()
-				require("lspconfig").gopls.setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-					settings = {
-						gopls = {
-							buildFlags = { "-tags=e2e,unit" },
-							analyses = {
-								unusedparams = true,
-								nilness = true,
-								unusedwrite = true,
-								shadow = true,
-							},
-							staticcheck = true,
-							gofumpt = true,
-							completeUnimported = true,
-							usePlaceholders = false,
-							hints = {
-								assignVariableTypes = true,
-								compositeLiteralFields = true,
-								compositeLiteralTypes = true,
-								constantValues = true,
-								parameterNames = true,
-								rangeVariableTypes = true,
-							},
-						},
+				},
+			},
+		})
+		-- Go specific
+		lspconfig.gopls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				gopls = {
+					buildFlags = { "-tags=e2e,unit" },
+					analyses = {
+						unusedparams = true,
+						nilness = true,
+						unusedwrite = true,
+						shadow = true,
 					},
-				})
-			end,
-			-- Python specific
-			["pyright"] = function()
-				require("lspconfig").pyright.setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-					settings = {
-						python = {
-							analysis = {
-								typeCheckingMode = "basic",
-								autoSearchPaths = true,
-								useLibraryCodeForTypes = true,
-							},
-						},
+					staticcheck = true,
+					gofumpt = true,
+					completeUnimported = true,
+					usePlaceholders = false,
+					hints = {
+						assignVariableTypes = true,
+						compositeLiteralFields = true,
+						compositeLiteralTypes = true,
+						constantValues = true,
+						parameterNames = true,
+						rangeVariableTypes = true,
 					},
-				})
-			end,
-			-- Typescript specific
-			["ts_ls"] = function()
-				require("lspconfig").ts_ls.setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-					settings = {
-						javascript = {
-							format = { enable = true },
-							lint = { enable = true, lintOnSave = true },
-						},
-						typescript = {
-							format = { enable = true },
-							lint = { enable = true, lintOnSave = true },
-						},
+				},
+			},
+		})
+		-- Python specific
+		lspconfig.pyright.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				python = {
+					analysis = {
+						typeCheckingMode = "basic",
+						autoSearchPaths = true,
+						useLibraryCodeForTypes = true,
 					},
-				})
-			end,
-			["rust_analyzer"] = function()
-				require("lspconfig").rust_analyzer.setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-					settings = {
-						["rust_analyzer"] = {
-							checkOnSave = {
-								command = "clippy",
-							},
-							cargo = {
-								allFeatures = true,
-							},
-							procMacro = {
-								enable = true,
-							},
-						},
+				},
+			},
+		})
+		-- Typescript specific
+		lspconfig.ts_ls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				javascript = {
+					format = { enable = true },
+					lint = { enable = true, lintOnSave = true },
+				},
+				typescript = {
+					format = { enable = true },
+					lint = { enable = true, lintOnSave = true },
+				},
+			},
+		})
+		-- Rust
+		lspconfig.rust_analyzer.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				["rust_analyzer"] = {
+					checkOnSave = {
+						command = "clippy",
 					},
-				})
-			end,
+					cargo = {
+						allFeatures = true,
+					},
+					procMacro = {
+						enable = true,
+					},
+				},
+			},
 		})
 
 		--Autocomplete
