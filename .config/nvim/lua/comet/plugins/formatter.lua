@@ -15,8 +15,11 @@ return {
 				--yaml = { "prettier" },
 				markdown = { "prettier" },
 				lua = { "stylua" },
-				go = { "gofmt" },
+				go = { "goimports", "gofmt" },
 				python = { "isort", "black" },
+				rust = { "rustfmt" },
+				sh = { "shfmt" },
+				bash = { "shfmt" },
 			},
 			format_on_save = {
 				lsp_fallback = "fallback",

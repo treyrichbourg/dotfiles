@@ -6,12 +6,12 @@ return {
 	dependencies = {
 		{ "williamboman/mason.nvim", config = true },
 		"williamboman/mason-lspconfig.nvim",
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-cmdline",
 		"hrsh7th/nvim-cmp",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 	},
@@ -82,6 +82,7 @@ return {
 				"bashls",
 				"gopls",
 				"html",
+				"rust_analyzer",
 			},
 			automatic_installation = true,
 		})
@@ -179,6 +180,25 @@ return {
 					},
 				})
 			end,
+			["rust_analyzer"] = function()
+				require("lspconfig").rust_analyzer.setup({
+					capabilities = capabilities,
+					on_attach = on_attach,
+					settings = {
+						["rust_analyzer"] = {
+							checkOnSave = {
+								command = "clippy",
+							},
+							cargo = {
+								allFeatures = true,
+							},
+							procMacro = {
+								enable = true,
+							},
+						},
+					},
+				})
+			end,
 		})
 
 		--Autocomplete
@@ -210,11 +230,23 @@ return {
 		--Formatters and Linters
 		require("mason-tool-installer").setup({
 			ensure_installed = {
+				-- Python
 				"isort",
 				"black",
-				"stylua",
-				"prettier",
 				"pylint",
+				-- Lua
+				"stylua",
+				-- JS/TS
+				"prettier",
+				"eslint_d",
+				-- Rust
+				"rustfmt",
+				-- Go
+				"goimports",
+				"golangci-lint",
+				-- Shell
+				"shfmt",
+				"shellcheck",
 			},
 		})
 		vim.g.go_test_flags = "-tags=e2e"
