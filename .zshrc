@@ -38,6 +38,8 @@ alias sudo='nocorrect sudo -E '
 #exports
 export GOPATH=$HOME/go
 export PATH="$PATH:$HOME/Projects/Python3:/opt/nvim-linux-x86_64/bin:$GOPATH/bin:$HOME/.local/share/nvim/mason/bin:/usr/local/go/bin:$GOPATH:$HOME/.cargo/bin"
+export EDITOR="/opt/nvim-linux-x86_64/bin/nvim"
+export VISUAL="/opt/nvim-linux-x86_64/bin/nvim"
 
 # Use modern completion system
 autoload -Uz compinit
