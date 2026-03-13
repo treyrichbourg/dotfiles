@@ -5,6 +5,7 @@ return {
 		"neovim/nvim-lspconfig",
 		"williamboman/mason.nvim",
 		"hrsh7th/cmp-nvim-lsp",
+		"j-hui/fidget.nvim",
 	},
 	opts = {
 		filewatching = "off",
