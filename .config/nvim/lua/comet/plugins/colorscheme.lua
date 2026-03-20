@@ -4,39 +4,38 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		config = function()
-			mocha = "colorscheme catppuccin-mocha"
-			frappe = "colorscheme catppuccin-frappe"
-			macchiato = "colorscheme catppuccin-macchiato"
-			latte = "colorscheme catppuccin-latte"
-			vim.cmd(macchiato) --Active
+			-- vim.cmd.colorscheme("catppuccin-frappe")
+			-- vim.cmd.colorscheme("catppuccin-macchiato")
+			vim.cmd.colorscheme("catppuccin-mocha")
 		end,
 	},
 	{
 		"rebelot/kanagawa.nvim",
 		name = "kanagawa-wave",
+		lazy = true,
 		config = function()
-			wave = "colorscheme kanagawa-wave"
-			dragon = "colorscheme kanagawa-dragon"
-			lotus = "colorscheme kanagawa-lotus"
-			--			vim.cmd(wave) --Active
+			-- vim.cmd.colorscheme("kanagawa-wave")
+			-- vim.cmd.colorscheme("kanagawa-dragon")
+			-- vim.cmd.colorscheme("kanagawa-lotus")
 		end,
 	},
 	{
 		"rose-pine/neovim",
 		name = "rose-pine",
+		lazy = true,
 		config = function()
-			rose = "colorscheme rose-pine"
+			-- vim.cmd.colorscheme("rose-pine")
 		end,
 	},
 	{
 		"folke/tokyonight.nvim",
 		name = "tokyonight",
+		lazy = true,
 		config = function()
-			night = "colorscheme tokyonight-night"
-			storm = "colorscheme tokyonight-storm"
-			moon = "colorscheme tokyonight-moon"
-			day = "colorscheme tokyonight-day"
-			--vim.cmd(night)
+			-- vim.cmd.colorscheme("tokyonight-night")
+			-- vim.cmd.colorscheme("tokyonight-storm")
+			-- vim.cmd.colorscheme("tokyonight-moon")
+			-- vim.cmd.colorscheme("tokyonight-day")
 		end,
 	},
 }

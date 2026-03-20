@@ -1,7 +1,15 @@
 return {
 	"williamboman/mason-lspconfig.nvim",
 	dependencies = {
-		{ "williamboman/mason.nvim", opts = {} },
+		{
+			"williamboman/mason.nvim",
+			opts = {
+				registries = {
+					"github:mason-org/mason-registry",
+					"github:Crashdummyy/mason-registry",
+				},
+			},
+		},
 		"neovim/nvim-lspconfig",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"hrsh7th/cmp-nvim-lsp",
@@ -13,13 +21,6 @@ return {
 		"saadparwaiz1/cmp_luasnip",
 	},
 	config = function()
-		require("mason").setup({
-			registries = {
-				"github:mason-org/mason-registry",
-				"github:Crashdummyy/mason-registry",
-			},
-		})
-
 		vim.diagnostic.config({
 			virtual_text = true,
 			signs = true,
