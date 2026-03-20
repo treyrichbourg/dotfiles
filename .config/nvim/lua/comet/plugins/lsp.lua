@@ -1,11 +1,8 @@
 return {
-	"neovim/nvim-lspconfig",
-	opts = {
-		mason = false,
-	},
+	"williamboman/mason-lspconfig.nvim",
 	dependencies = {
-		{ "williamboman/mason.nvim", config = true },
-		"williamboman/mason-lspconfig.nvim",
+		{ "williamboman/mason.nvim", opts = {} },
+		"neovim/nvim-lspconfig",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
@@ -31,77 +28,61 @@ return {
 		})
 
 		-- Capabilities
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+		local capabilities = vim.tbl_deep_extend(
+			"force",
+			vim.lsp.protocol.make_client_capabilities(),
+			require("cmp_nvim_lsp").default_capabilities()
+		)
 		---@diagnostic disable-next-line: inject-field
 		capabilities.offsetEncoding = { "utf-8" }
 
 		-- LSP keymaps
-		local function on_attach(client, bufnr)
-			if vim.b[bufnr].lsp_attached then
-				return
-			end
-			vim.b[bufnr].lsp_attached = true
-
-			local opts = { buffer = bufnr }
-			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-			vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-			vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-			vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { buffer = bufnr, desc = "Show diagnostics" })
-			vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
-			vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
-			vim.keymap.set("n", "<space>wl", function()
-				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-			end, opts)
-			vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
-			vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
-			vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
-			vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-			vim.keymap.set("n", "<space>f", function()
-				if client.server_capabilities.documentFormattingProvider then
-					vim.lsp.buf.format({ async = true })
-				else
-					vim.notify("Formatting not supported by attached LSP.")
+		vim.api.nvim_create_autocmd("LspAttach", {
+			callback = function(args)
+				local bufnr = args.buf
+				if vim.b[bufnr].lsp_attached then
+					return
 				end
-				--if vim.lsp.buf.server_capabilities().documentFormattingProvider then
-				--	vim.lsp.buf.format({ async = true })
-				--else
-				--	vim.notify("Formatting not supported by attached LSP.")
-				--end
-			end, opts)
-		end
+				vim.b[bufnr].lsp_attached = true
 
-		--Language servers
-		require("mason-lspconfig").setup({
-			ensure_installed = {
-				"pyright",
-				"lua_ls",
-				"ts_ls",
-				"bashls",
-				"gopls",
-				"html",
-				"rust_analyzer",
-			},
-			automatic_enable = true,
+				local client = vim.lsp.get_client_by_id(args.data.client_id)
+				local opts = { buffer = bufnr }
+				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+				vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+				vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+				vim.keymap.set(
+					"n",
+					"<leader>df",
+					vim.diagnostic.open_float,
+					{ buffer = bufnr, desc = "Show diagnostics" }
+				)
+				vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
+				vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+				vim.keymap.set("n", "<space>wl", function()
+					print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+				end, opts)
+				vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
+				vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+				vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
+				vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+				vim.keymap.set("n", "<space>f", function()
+					if client and client.server_capabilities.documentFormattingProvider then
+						vim.lsp.buf.format({ async = true })
+					else
+						vim.notify("Formatting not supported by attached LSP.")
+					end
+				end, opts)
+			end,
 		})
 
-		local lspconfig = require("lspconfig")
+		--Language server configs..
+		-- Generic
+		vim.lsp.config("*", { capabilities = capabilities })
 
-		-- LSPs just using defaults
-		local servers = { "bashls", "html" }
-		for _, server in ipairs(servers) do
-			lspconfig[server].setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-			})
-		end
-
-		-- Lua specific
-		lspconfig.lua_ls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		-- Lua
+		vim.lsp.config("lua_ls", {
 			settings = {
 				Lua = {
 					diagnostics = {
@@ -120,9 +101,7 @@ return {
 			},
 		})
 		-- Go specific
-		lspconfig.gopls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		vim.lsp.config("gopls", {
 			settings = {
 				gopls = {
 					buildFlags = { "-tags=e2e,unit" },
@@ -148,9 +127,7 @@ return {
 			},
 		})
 		-- Python specific
-		lspconfig.pyright.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		vim.lsp.config("pyright", {
 			settings = {
 				python = {
 					analysis = {
@@ -162,9 +139,7 @@ return {
 			},
 		})
 		-- Typescript specific
-		lspconfig.ts_ls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		vim.lsp.config("ts_ls", {
 			settings = {
 				javascript = {
 					format = { enable = true },
@@ -177,9 +152,7 @@ return {
 			},
 		})
 		-- Rust
-		lspconfig.rust_analyzer.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		vim.lsp.config("rust_analyzer", {
 			settings = {
 				["rust_analyzer"] = {
 					checkOnSave = {
@@ -193,6 +166,19 @@ return {
 					},
 				},
 			},
+		})
+
+		require("mason-lspconfig").setup({
+			ensure_installed = {
+				"pyright",
+				"lua_ls",
+				"ts_ls",
+				"bashls",
+				"gopls",
+				"html",
+				"rust_analyzer",
+			},
+			automatic_enable = true,
 		})
 
 		--Autocomplete
