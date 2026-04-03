@@ -17,3 +17,19 @@ autocmd("TextYankPost", {
 		vim.highlight.on_yank()
 	end,
 })
+
+--Tell Treesitter to parse yaml templates as helm when I'm working in any
+--project containing a Chart.yaml
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+    pattern = { "*.yaml", "*.yml", "*.tpl" },
+    callback = function()
+        local filepath = vim.fn.expand("%:p")
+        if filepath:match("/templates/") then
+            -- check for Chart.yaml in parent directories
+            local chart = vim.fn.findfile("Chart.yaml", vim.fn.expand("%:p:h") .. ";")
+            if chart ~= "" then
+                vim.bo.filetype = "helm"
+            end
+        end
+    end,
+})

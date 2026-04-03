@@ -19,6 +19,9 @@ return {
 				"rust",
 				"bash",
 				"toml",
+				"yaml",
+				"json",
+				"helm",
 			},
 			sync_install = false,
 			auto_install = true,
@@ -26,6 +29,8 @@ return {
 				enable = true,
 				additional_vim_regex_highlighting = { "markdown" },
 			},
+			modules = {},
+			ignore_install = {},
 		})
 	end,
 }
