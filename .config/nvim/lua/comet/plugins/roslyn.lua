@@ -42,20 +42,22 @@ return {
 			},
 		})
 
-		-- Diagnostic refresh on InsertLeave
-		vim.api.nvim_create_autocmd("InsertLeave", {
+		local function refresh_roslyn_diagnostics(buf)
+			local clients = vim.lsp.get_clients({ name = "roslyn" })
+			if not clients or #clients == 0 then
+				return
+			end
+			local client = clients[1]
+			local params = { textDocument = vim.lsp.util.make_text_document_params(buf) }
+			vim.defer_fn(function()
+				client:request("textDocument/diagnostic", params, nil, buf)
+			end, 100)
+		end
+
+		vim.api.nvim_create_autocmd({ "InsertLeave", "BufEnter" }, {
 			pattern = "*.cs",
 			callback = function()
-				local clients = vim.lsp.get_clients({ name = "roslyn" })
-				if not clients or #clients == 0 then
-					return
-				end
-				local client = clients[1]
-				local buffers = vim.lsp.get_buffers_by_client_id(client.id)
-				for _, buf in ipairs(buffers) do
-					local params = { textDocument = vim.lsp.util.make_text_document_params(buf) }
-					client:request("textDocument/diagnostic", params, nil, buf)
-				end
+				refresh_roslyn_diagnostics(vim.api.nvim_get_current_buf())
 			end,
 		})
 
